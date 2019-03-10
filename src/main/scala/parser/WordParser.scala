@@ -1,6 +1,6 @@
 package parser
 
-object FileParser {
+object WordParser {
 
   private val wordRegex = raw"([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)".r
 

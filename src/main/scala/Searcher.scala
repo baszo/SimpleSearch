@@ -1,19 +1,22 @@
 import java.util.Scanner
 
 import indexing.InvertedIndex
-import parser.ArgsParser
+import parser.{ArgsParser, WordParser}
 
 object Searcher extends App {
 
   def startProgram(index: InvertedIndex) = {
 
-    // ​ TODO: ​ ​ Index ​ ​ all ​ ​ files ​ ​ in ​ ​ indexableDirectory
-    val keyboard​ = new Scanner(System.in)
+    print("search> ")
+    Iterator.continually(scala.io.StdIn.readLine).takeWhile(!_.equals(":quit")).foreach { line =>
+      val result = index.search(WordParser.parse(line).toList)
 
-    while (true) {
-      System.out.println("search> ")
-      val line = keyboard​.nextLine()
-      // ​ TODO: ​ ​ Search ​ ​ indexed ​ ​ files ​ ​ for ​ ​ words ​ ​ in ​ ​ line
+      result.foreach {
+        case (k, v) =>
+          println(s"File $k : $v %")
+      }
+
+      println("search> ")
     }
 
   }

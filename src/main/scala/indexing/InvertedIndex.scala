@@ -2,7 +2,7 @@ package indexing
 
 import java.io.File
 
-import parser.FileParser
+import parser.WordParser
 
 import scala.collection.mutable
 
@@ -20,7 +20,7 @@ object InvertedIndex {
 
     files.foreach { file =>
       try {
-        scala.io.Source.fromFile(file).getLines.flatMap(FileParser.parse).foreach { word =>
+        scala.io.Source.fromFile(file).getLines.flatMap(WordParser.parse).foreach { word =>
           index += (word -> (index(word) + file.getName))
         }
       }
