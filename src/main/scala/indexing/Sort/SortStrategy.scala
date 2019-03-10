@@ -1,0 +1,24 @@
+package indexing.Sort
+
+import indexing.SearchResult
+
+object SortStrategy {
+  private def Desc[T: Ordering] = implicitly[Ordering[T]].reverse
+
+  def sortByMatchedWordsAndNumberOfOccurrence(results: Map[String, SearchResult]) = {
+    results.toSeq.sortBy(d => (d._2.sumOfWordFound, d._2.numberOfWordsFound))(Desc).toMap
+  }
+
+  def sortByMatchedWordsAndWordsInRow(results: Map[String, SearchResult]) = {
+    results.toSeq.sortBy(d => (d._2.sumOfWordFound, d._2.wordsInRow))(Desc).toMap
+  }
+
+  def sortByMatchedWords(results: Map[String, SearchResult]) = {
+    results.toSeq.sortBy(d => d._2.sumOfWordFound)(Desc).toMap
+  }
+
+
+  def sort(sortFunction: Map[String, SearchResult] => Map[String, SearchResult], data: Map[String, SearchResult]) =
+    sortFunction(data)
+
+}

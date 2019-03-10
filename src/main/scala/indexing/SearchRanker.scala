@@ -1,5 +1,7 @@
 package indexing
 
+import indexing.Sort.SortStrategy
+
 
 case class QueryResult(fileName: String, percentage: Int)
 
@@ -10,7 +12,6 @@ object QueryResult {
 }
 
 case class SearchRanker(invertedIndex: InvertedIndex) {
-  private def Desc[T: Ordering] = implicitly[Ordering[T]].reverse
 
   private def convertToPercent(mapFileWordsMatched: Map[String, SearchResult], totalCount: Int): Seq[(String, Int)] = {
     mapFileWordsMatched.map {
@@ -19,17 +20,10 @@ case class SearchRanker(invertedIndex: InvertedIndex) {
     }.toSeq
   }
 
-  private def sortByMatchedWordsAndNumberOfOccurrence(results: Map[String, SearchResult]) = {
-    results.toSeq.sortBy(d => (d._2.sumOfWordFound, d._2.numberOfWordsFound))(Desc).toMap
-  }
-
-  private def sortByMachedWords(results: Map[String, SearchResult]) = {
-    results.toSeq.sortBy(d => d._2.sumOfWordFound)(Desc).toMap
-  }
 
   def query(words: List[String]): Seq[QueryResult] = {
     val documents = invertedIndex.search(words)
-    val sorted = sortByMatchedWordsAndNumberOfOccurrence(documents)
+    val sorted = SortStrategy.sort(SortStrategy.sortByMatchedWordsAndWordsInRow, documents)
     convertToPercent(sorted, words.size).take(10)
   }
 

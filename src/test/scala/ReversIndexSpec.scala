@@ -15,7 +15,7 @@ class ReversIndexSpec extends FlatSpec with PrivateMethodTester {
 
     val test: Int = getInvertedIndex("/testData").getIndexSize
 
-    assert(test == 349)
+    assert(test == 353)
 
   }
 
@@ -49,6 +49,16 @@ class ReversIndexSpec extends FlatSpec with PrivateMethodTester {
     assert(result.contains("test2.txt"), true)
     assert(result("test2.txt").numberOfWordsFound == 1)
     assert(result("test2.txt").sumOfWordFound == 2)
+  }
+
+  it should "return most word in row accurance" in {
+    val test = getInvertedIndex("/testData")
+    val result = test.search(List("to" ,"be", "or", "not", "to", "be"))
+    assert(result.contains("test1.txt"), true)
+    assert(result.contains("test3.txt"), true)
+    assert(result("test1.txt").numberOfWordsFound == 6)
+    assert(result("test3.txt").numberOfWordsFound == 6)
+    assert(result("test1.txt").wordsInRow > result("test3.txt").wordsInRow)
   }
 
 }
