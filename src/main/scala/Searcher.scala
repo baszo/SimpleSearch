@@ -1,23 +1,21 @@
 import java.util.Scanner
 
-import indexing.InvertedIndex
+import indexing.{InvertedIndex, SearchRanker}
 import parser.{ArgsParser, WordParser}
 
 object Searcher extends App {
 
-  def startProgram(index: InvertedIndex) = {
+  def startProgram(searchRanker: SearchRanker) = {
 
     print("search> ")
     Iterator.continually(scala.io.StdIn.readLine).takeWhile(!_.equals(":quit")).foreach { line =>
-      val result = index.search(WordParser.parse(line).toList)
+      val results = searchRanker.query(WordParser.parse(line).toList)
 
-      if(result.isEmpty)
+      if (results.isEmpty)
         println("no matches found")
       else
-        result.foreach {
-          case (k, v) =>
-            println(s"File $k : $v %")
-        }
+        results.foreach(result =>
+          println(s"File ${result.fileName} : ${result.percentage} %"))
 
       print("search> ")
     }
@@ -30,8 +28,9 @@ object Searcher extends App {
       val directory = ArgsParser.validateAndParseArgs(args)
 
       val index = InvertedIndex(ArgsParser.getFilesForDirectory(directory))
+      val searchRanker = SearchRanker(index)
 
-      startProgram(index)
+      startProgram(searchRanker)
 
     } catch {
       case e: IllegalArgumentException => {

@@ -15,7 +15,7 @@ class ReversIndexSpec extends FlatSpec with PrivateMethodTester {
 
     val test: Int = getInvertedIndex("/testData").getIndexSize
 
-    assert(test == 350)
+    assert(test == 349)
 
   }
 
@@ -31,7 +31,6 @@ class ReversIndexSpec extends FlatSpec with PrivateMethodTester {
 
     val result = test.search(List("skorupach"))
     result.size equals 1
-    result.head._2 equals 100
 
   }
 
@@ -42,12 +41,14 @@ class ReversIndexSpec extends FlatSpec with PrivateMethodTester {
     result.isEmpty equals true
   }
 
-  it should "return result in order of how many words was found in array" in {
+  it should "return result how many word found and occurrence in file" in {
     val test = getInvertedIndex("/testData")
 
     val result = test.search(List("nie", "na", "skorupach"))
-    result.size equals 3
-    assert(result.head._2 > result.last._2)
+    result.values.size equals 3
+    assert(result.head._1 == "test2.txt")
+    assert(result.head._2.numberOfWordsFound == 1)
+    assert(result.head._2.sumOfWordFound == 2)
   }
 
 }

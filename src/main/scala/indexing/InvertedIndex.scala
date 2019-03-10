@@ -6,21 +6,20 @@ import parser.WordParser
 
 import scala.collection.mutable
 
+case class SearchResult(numberOfWordsFound: Int, sumOfWordFound: Int)
+
 class InvertedIndex(private val invertedIndex: mutable.Map[String, mutable.HashMap[String, Int]]) {
 
-  private def convertToPercentAndSort(mapFileWordsMatched: Map[String, Int], totalCount: Int) = {
-    mapFileWordsMatched.map {
-      case (k, v) =>
-        k -> ((v.toDouble / totalCount) * 100).toInt
-    }.toSeq.sortBy(-_._2)
-  }
 
-  def search(queries: Seq[String]): Seq[(String, Int)] = {
-    val totalCount = queries.size
+  def search(queries: Seq[String]): Map[String, SearchResult] = {
     println(s"""Searching for ${queries map ("\"" + _ + "\"") mkString " and "}""")
 
-    val mapFileWordsMatched = queries.flatMap(invertedIndex).map(_._1).groupBy(identity).mapValues(_.size)
-    convertToPercentAndSort(mapFileWordsMatched, totalCount).take(10)
+    val mapFileWordsMatched = queries.flatMap(invertedIndex).groupBy(_._1).mapValues { word =>
+      val numOfWords = word.map(_._2).sum
+      val matched = word.size
+      SearchResult(matched, numOfWords)
+    }
+    mapFileWordsMatched
   }
 
   def getIndexSize = invertedIndex.keys.size
