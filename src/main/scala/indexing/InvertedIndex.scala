@@ -14,15 +14,15 @@ class InvertedIndex(private val invertedIndex: mutable.Map[String, mutable.HashM
   def search(queries: Seq[String]): Map[String, SearchResult] = {
     println(s"""Searching for ${queries map ("\"" + _ + "\"") mkString " and "}""")
 
-    val mapFileWordsMatched = queries.flatMap(invertedIndex).groupBy(_._1).mapValues { word =>
-      val numOfWords = word.map(_._2).sum
-      val matched = word.size
-      SearchResult(matched, numOfWords)
+    val mapFileWordsMatched = queries.par.flatMap(invertedIndex).groupBy(_._1).mapValues { words =>
+      val sumOfWords = words.map(_._2).sum
+      val matched = words.size
+      SearchResult(matched, sumOfWords)
     }
-    mapFileWordsMatched
+    mapFileWordsMatched.toList.toMap
   }
 
-  def getIndexSize = invertedIndex.keys.size
+  def getIndexSize: Int = invertedIndex.keys.size
 }
 
 object InvertedIndex {
@@ -40,7 +40,7 @@ object InvertedIndex {
       catch {
         case e: Exception =>
           e.printStackTrace()
-          println("skipped file")
+          println("skipped file " + file.getName)
       }
     }
     new InvertedIndex(index)

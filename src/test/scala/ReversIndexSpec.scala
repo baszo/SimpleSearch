@@ -46,9 +46,9 @@ class ReversIndexSpec extends FlatSpec with PrivateMethodTester {
 
     val result = test.search(List("nie", "na", "skorupach"))
     result.values.size equals 3
-    assert(result.head._1 == "test2.txt")
-    assert(result.head._2.numberOfWordsFound == 1)
-    assert(result.head._2.sumOfWordFound == 2)
+    assert(result.contains("test2.txt"), true)
+    assert(result("test2.txt").numberOfWordsFound == 1)
+    assert(result("test2.txt").sumOfWordFound == 2)
   }
 
 }
