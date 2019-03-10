@@ -19,4 +19,13 @@ object ArgsParser {
     case _ => throw new IllegalArgumentException("Usage: Searcher Directory")
   }
 
+  def getFilesForDirectory(directory: File): Seq[File] = {
+    val filesInDirectory = directory.listFiles.filter(_.isFile)
+
+    if (filesInDirectory.isEmpty) {
+      throw new IllegalArgumentException("no files in divven directory")
+    }
+    filesInDirectory.toList
+  }
+
 }
