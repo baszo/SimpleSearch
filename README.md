@@ -1,2 +1,2 @@
-# -SimpleSearch
+# SimpleSearch
 Java/Scala​ ​ Coding​ ​ Exercise​
