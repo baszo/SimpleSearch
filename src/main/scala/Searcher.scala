@@ -1,21 +1,27 @@
-import java.io.File
 import java.util.Scanner
+
+import parser.ArgsParser
 
 object Searcher extends App {
 
   override def main(args: Array[String]): Unit = {
 
-    if (args.length == 0) {
-      throw new IllegalArgumentException("No​ ​ directory​ ​ given​ ​ to​ ​ index.")
-    }
-    val indexableDirectory = new File(args.head)
-    // ​ TODO: ​ ​ Index ​ ​ all ​ ​ files ​ ​ in ​ ​ indexableDirectory
-    val keyboard​ = new Scanner(System.in)
+    try {
+      val directory = ArgsParser.validateAndParseArgs(args)
 
-    while (true) {
-      System.out.println("search> ")
-      val line = keyboard​.nextLine()
-      // ​ TODO: ​ ​ Search ​ ​ indexed ​ ​ files ​ ​ for ​ ​ words ​ ​ in ​ ​ line
+      // ​ TODO: ​ ​ Index ​ ​ all ​ ​ files ​ ​ in ​ ​ indexableDirectory
+      val keyboard​ = new Scanner(System.in)
+
+      while (true) {
+        System.out.println("search> ")
+        val line = keyboard​.nextLine()
+        // ​ TODO: ​ ​ Search ​ ​ indexed ​ ​ files ​ ​ for ​ ​ words ​ ​ in ​ ​ line
+      }
+    } catch {
+      case e: IllegalArgumentException => {
+        System.out.println(e.getMessage)
+        System.exit(1)
+      }
     }
 
   }
