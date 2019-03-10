@@ -29,7 +29,7 @@ object Searcher extends App {
 
     } catch {
       case e: IllegalArgumentException => {
-        System.out.println(e.getMessage)
+        println(e.getMessage)
         System.exit(1)
       }
     }
