@@ -8,7 +8,20 @@ import scala.collection.mutable
 
 class InvertedIndex(private val invertedIndex: mutable.Map[String, Set[String]]) {
 
-  def search(queries: Seq[String]): Seq[(String, Int)] = ???
+  private def convertToPercentAndSort(mapFileWordsMatched: Map[String, Int], totalCount: Int) = {
+    mapFileWordsMatched.map {
+      case (k, v) =>
+        k -> ((v.toDouble / totalCount) * 100).toInt
+    }.toSeq.sortBy(-_._2)
+  }
+
+  def search(queries: Seq[String]): Seq[(String, Int)] = {
+    val totalCount = queries.size
+    println(s"""Searching for ${queries map ("\"" + _ + "\"") mkString " and "}""")
+
+    val mapFileWordsMatched = queries.flatMap(invertedIndex).groupBy(identity).mapValues(_.size)
+    convertToPercentAndSort(mapFileWordsMatched, totalCount).take(10)
+  }
 
   def getIndexSize = invertedIndex.keys.size
 }

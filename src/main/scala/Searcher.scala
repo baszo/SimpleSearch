@@ -11,12 +11,15 @@ object Searcher extends App {
     Iterator.continually(scala.io.StdIn.readLine).takeWhile(!_.equals(":quit")).foreach { line =>
       val result = index.search(WordParser.parse(line).toList)
 
-      result.foreach {
-        case (k, v) =>
-          println(s"File $k : $v %")
-      }
+      if(result.isEmpty)
+        println("no matches found")
+      else
+        result.foreach {
+          case (k, v) =>
+            println(s"File $k : $v %")
+        }
 
-      println("search> ")
+      print("search> ")
     }
 
   }
