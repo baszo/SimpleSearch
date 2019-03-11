@@ -10,11 +10,11 @@ object SortStrategy {
   }
 
   def sortByMatchedWordsAndWordsInRow(results: Map[String, SearchResult]) = {
-    results.toSeq.sortBy(d => (d._2.wordsInRow, d._2.sumOfWordFound))(Desc).toMap
+    results.toSeq.sortBy(d => (d._2.numberOfWordsFound, d._2.wordsInRow))(Desc).toMap
   }
 
   def sortByMatchedWords(results: Map[String, SearchResult]) = {
-    results.toSeq.sortBy(d => d._2.sumOfWordFound)(Desc).toMap
+    results.toSeq.sortBy(d => d._2.numberOfWordsFound)(Desc).toMap
   }
 
 
