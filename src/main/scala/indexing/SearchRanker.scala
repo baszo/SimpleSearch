@@ -23,8 +23,8 @@ case class SearchRanker(invertedIndex: InvertedIndex) {
     results.toSeq.sortBy(d => (-1 * d._2.numberOfWordsFound, -1 * d._2.sumOfWordFound)).toMap
   }
 
-  private def sortByMachedWords(results: Map[String, SearchResult]) = {
-    results.toSeq.sortBy(d => d._2.sumOfWordFound)(Desc).toMap
+  private def sortByMatchedWords(results: Map[String, SearchResult]) = {
+    results.toSeq.sortBy(d => d._2.numberOfWordsFound)(Desc).toMap
   }
 
   def query(words: List[String]): Seq[QueryResult] = {
