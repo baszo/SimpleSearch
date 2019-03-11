@@ -13,38 +13,38 @@ class ReversIndexSpec extends FlatSpec with PrivateMethodTester {
 
   "ReverseIndex" should "build reverse files ok Index" in {
 
-    val test: Int = getInvertedIndex("/testData").getIndexSize
+    val numberOfWord: Int = getInvertedIndex("/testData").getIndexSize
 
-    assert(test == 349)
+    assert(numberOfWord == 349)
 
   }
 
 
   it should "skip files that cannot be read" in {
-    val test = getInvertedIndex("/").getIndexSize
+    val numberOfWords = getInvertedIndex("/").getIndexSize
 
-    test equals 0
+    numberOfWords equals 0
   }
 
   it should "return one file for word skorupach" in {
-    val test = getInvertedIndex("/testData")
+    val index = getInvertedIndex("/testData")
 
-    val result = test.search(List("skorupach"))
+    val result = index.search(List("skorupach"))
     result.size equals 1
 
   }
 
   it should "return empty map if no word was found" in {
-    val test = getInvertedIndex("/testData")
+    val index = getInvertedIndex("/testData")
 
-    val result = test.search(List("notExistingWord"))
+    val result = index.search(List("notExistingWord"))
     result.isEmpty equals true
   }
 
   it should "return result how many word found and occurrence in file" in {
-    val test = getInvertedIndex("/testData")
+    val index = getInvertedIndex("/testData")
 
-    val result = test.search(List("nie", "na", "skorupach"))
+    val result = index.search(List("nie", "na", "skorupach"))
     result.values.size equals 3
     assert(result.contains("test2.txt"), true)
     assert(result("test2.txt").numberOfWordsFound == 1)

@@ -23,7 +23,7 @@ object ArgsParser {
     val filesInDirectory = directory.listFiles.filter(_.isFile)
 
     if (filesInDirectory.isEmpty) {
-      throw new IllegalArgumentException("no files in divven directory")
+      throw new IllegalArgumentException("no files in given directory")
     }
     filesInDirectory.toList
   }

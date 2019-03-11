@@ -20,7 +20,7 @@ case class SearchRanker(invertedIndex: InvertedIndex) {
   }
 
   private def sortByMatchedWordsAndNumberOfOccurrence(results: Map[String, SearchResult]) = {
-    results.toSeq.sortBy(d => (d._2.sumOfWordFound, d._2.numberOfWordsFound))(Desc).toMap
+    results.toSeq.sortBy(d => (-1 * d._2.numberOfWordsFound, -1 * d._2.sumOfWordFound)).toMap
   }
 
   private def sortByMachedWords(results: Map[String, SearchResult]) = {
